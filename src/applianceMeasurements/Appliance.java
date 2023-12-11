@@ -1,6 +1,16 @@
 package applianceMeasurements;
 
 public class Appliance {
+	private int quantity;
+	
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
 	private double width, depth, length;
 	private String sku,name;
 	
@@ -10,6 +20,10 @@ public class Appliance {
 		this.length = height;
 		this.sku = sku;
 		this.name = name;
+	}
+
+	public Appliance() {
+		// TODO Auto-generated constructor stub
 	}
 
 	public String getName() {

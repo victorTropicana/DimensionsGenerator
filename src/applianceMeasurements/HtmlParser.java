@@ -6,24 +6,32 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 
 public class HtmlParser {
 
-	private File f;
 	private File dimensionsFile;
 	private HashMap<String, Appliance> map;
 	private ArrayList<Appliance> appliances;
+	private Document document;
 
 	
 	//initialize hashmap for appliances and list to add matches
-	public HtmlParser(File f, String dimensions) throws FileNotFoundException {
-		this.f = f;
+	public HtmlParser(File f, String dimensions) throws IOException {
 		setupDimensionsFile(dimensions);
 		map = new MyFile(dimensionsFile).getMap();
 		appliances = new ArrayList<>();
+		document = Jsoup.parse(f, "UTF-8");
+		
+		
 	}
 	
 	
@@ -46,44 +54,43 @@ public class HtmlParser {
 	 */
 	public void parse() throws FileNotFoundException {
 		
-		//read file until we find keyword "EXTENDED" then stop
-		Scanner openFile = new Scanner(f);
-		String line = "";
-		boolean found = false;
-		CharSequence cs = "EXTENDED";
-		while (openFile.hasNext() && !found) {
-			line = openFile.nextLine();
-			if (line.contains(cs)) {
-				openFile.nextLine();
-				found = true;
-			}
-		}
+		//get 2nd table of page
+		Elements tables = document.select("table");
+		Element table = tables.get(1);
 		
-
-		//read each line and eliminate < > create array delimited by a blank space
-		//check if the current index contains a matching sku in the map
-		//if so it adds the appliance object to the appliances arraylist
-		String currString = "";
-		String tempArray[];
-		while (openFile.hasNextLine()) {
-
-			while (openFile.hasNext()) {
-				currString = openFile.next();
-				currString = currString.replace("<", " ");
-				currString = currString.replace(">", " ");
-				tempArray = currString.split(" ");
-				for (int i = 0; i < tempArray.length; ++i) {
-					if (map.containsKey(tempArray[i])) {
-						System.out.println("adding appliance " + map.get(tempArray[i]));
-						appliances.add(map.get(tempArray[i]));
-					}
+		//get all rows from page
+		Elements rows = table.select("tr");
+		
+		Appliance appliance;
+		
+		//iterate through each row
+		for(Element row: rows) {
+			
+			Elements columns = row.select("td");
+			
+			if(columns.size() == 10) {
+				
+				//get sku and quantity
+				String sku = columns.get(1).text();
+				String quantity = columns.get(5).text();
+				//System.out.println("col 1 : " + column2.text());
+				//System.out.println("col 6: " + column6.text());
+				
+				
+				//if we have the appliance in list add to list
+				if(map.containsKey(sku)) {
+					appliance = map.get(sku);
+					appliance.setQuantity(Integer.valueOf(quantity));
+					appliances.add(appliance);
 				}
-
+				
 			}
+			
 		}
-		openFile.close();
 
 	}
+	
+	
 
 	/** write file */
 	public void createFile(String outputName) {
@@ -136,12 +143,14 @@ public class HtmlParser {
 				imageName = imageName.replace("\\", "");
 				imageName = imageName.replace("/", "");
 				htmlContents.append("<tr>").append(systemSeparator);
+				htmlContents.append("<td>" + app.getQuantity() + "</td>").append(systemSeparator);
 				htmlContents.append("<td>" + app.getName() + "</td>").append(systemSeparator);
 				htmlContents.append("<td>" + app.getSku() + "</td>").append(systemSeparator);
 				htmlContents.append("<td>" + app.getWidth() + "</td>").append(systemSeparator);
 				htmlContents.append("<td>" + app.getDepth() + "</td>").append(systemSeparator);
 				htmlContents.append("<td>" + app.getLength() + "</td>").append(systemSeparator);
 				htmlContents.append("<td> <img src=" + imageFolder + imageName + ".png alt= \"no\" ></td>" );
+				htmlContents.append("<td> <input type = \"checkBox\" > </td>").append(systemSeparator);
 				htmlContents.append("</tr>").append(systemSeparator);
 			}
 

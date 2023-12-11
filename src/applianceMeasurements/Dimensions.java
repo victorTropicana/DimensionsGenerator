@@ -1,12 +1,12 @@
 package applianceMeasurements;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Dimensions {
 	
-	public static void main(String [] args) throws FileNotFoundException {
+	public static void main(String [] args) throws IOException {
 		//get current project directory
 		String currentDirectory = System.getProperty("user.dir");
 		String dimensionsFile = currentDirectory+"/Resources/Cutouts.csv";
@@ -40,7 +40,7 @@ public class Dimensions {
 		
 	} 
 	
-	private static void fillForm(File f,String dimensionsFile, String outputName) throws FileNotFoundException {
+	private static void fillForm(File f,String dimensionsFile, String outputName) throws IOException {
 		HtmlParser parser = new HtmlParser(f,dimensionsFile);
 		parser.parse();
 		parser.createFile(outputName+"Dimensions.html");
