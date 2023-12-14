@@ -22,7 +22,7 @@ public class MyFile {
     	 Scanner openFile = new Scanner(f);
     	 String sku1, sku2 = "";
     	 String name = "";
-    	 double width, depth, height = 0;
+    	 String width, depth, height = "";
     	 Appliance tempAppliance;
     	 String curr;
     	 String[] currLine;
@@ -35,9 +35,9 @@ public class MyFile {
 		    	 sku1 = currLine[0];
 		    	 sku2= currLine[1];
 		    	 name = currLine[2];
-		    	 width = Double.parseDouble(currLine[3]);
-		    	 depth = Double.parseDouble(currLine[4]);
-		    	 height= Double.parseDouble(currLine[5]);
+		    	 width = currLine[3];
+		    	 depth = currLine[4];
+		    	 height= currLine[5];
 		    	
 		    	 if(!sku1.isBlank()) {
 		    		 tempAppliance = new Appliance(sku1,name,width,depth,height);

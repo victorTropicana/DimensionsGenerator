@@ -11,10 +11,10 @@ public class Appliance {
 		this.quantity = quantity;
 	}
 
-	private double width, depth, length;
+	private String width, depth, length;
 	private String sku,name;
 	
-	public Appliance(String sku, String name, double width2, double depth2, double height) {
+	public Appliance(String sku, String name, String width2, String depth2, String height) {
 		this.width = width2;
 		this.depth = depth2;
 		this.length = height;
@@ -34,27 +34,27 @@ public class Appliance {
 		this.name = name;
 	}
 
-	public double getWidth() {
+	public String getWidth() {
 		return width;
 	}
 
-	public void setWidth(double width) {
+	public void setWidth(String width) {
 		this.width = width;
 	}
 
-	public double getDepth() {
+	public String getDepth() {
 		return depth;
 	}
 
-	public void setDepth(double depth) {
+	public void setDepth(String depth) {
 		this.depth = depth;
 	}
 
-	public double getLength() {
+	public String getLength() {
 		return length;
 	}
 
-	public void setLength(double length) {
+	public void setLength(String length) {
 		this.length = length;
 	}
 
