@@ -13,13 +13,15 @@ public class Appliance {
 
 	private String width, depth, length;
 	private String sku,name;
+	private String bundle;
 	
-	public Appliance(String sku, String name, String width2, String depth2, String height) {
+	public Appliance(String sku,String bundle, String name, String width2, String depth2, String height) {
 		this.width = width2;
 		this.depth = depth2;
 		this.length = height;
 		this.sku = sku;
 		this.name = name;
+		this.bundle = bundle;
 	}
 
 	public Appliance() {
@@ -28,6 +30,14 @@ public class Appliance {
 
 	public String getName() {
 		return name;
+	}
+	
+	public String getBundle() {
+		return bundle;
+	}
+	
+	public void setBundle(String bundle) {
+		this.bundle = bundle;
 	}
 
 	public void setName(String name) {

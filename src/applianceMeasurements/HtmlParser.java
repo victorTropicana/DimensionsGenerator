@@ -60,6 +60,8 @@ public class HtmlParser {
 		
 		//get all rows from page
 		Elements rows = table.select("tr");
+		String[] bundleList;
+		String bundle="";
 		
 		Appliance appliance;
 		
@@ -69,6 +71,8 @@ public class HtmlParser {
 			Elements columns = row.select("td");
 			
 			if(columns.size() == 10) {
+				
+				
 				
 				//get sku and quantity
 				String sku = columns.get(1).text();
@@ -80,8 +84,25 @@ public class HtmlParser {
 				//if we have the appliance in list add to list
 				if(map.containsKey(sku)) {
 					appliance = map.get(sku);
-					appliance.setQuantity(Integer.valueOf(quantity));
-					appliances.add(appliance);
+					
+					//we are handling appliances bundled here. it checks if the sku hashmap contains a bundle list. if so
+					//we get the bundle list as an array by splitting it based on a ; delimiter
+					//we then traverse the array and check each item on the list to make sure it is in the map
+					if(!appliance.getBundle().isBlank()) {
+						bundle = appliance.getBundle().replace(" ", "");
+						bundleList = bundle.split(";");
+						for(String item: bundleList) {
+							if(map.containsKey(item)) {
+								appliance = map.get(item);
+								appliance.setQuantity(Integer.valueOf(quantity));
+								appliances.add(appliance);
+							}
+						}
+					} else {
+					
+						appliance.setQuantity(Integer.valueOf(quantity));
+						appliances.add(appliance);
+					}
 				}
 				
 			}

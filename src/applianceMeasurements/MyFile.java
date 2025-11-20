@@ -20,7 +20,8 @@ public class MyFile {
      
      private void fillHashmap(File f) throws FileNotFoundException {
     	 Scanner openFile = new Scanner(f);
-    	 String sku1, sku2 = "";
+    	 String sku1= "";
+    	 String bundleList = ""; //this stores the item that is bundled with this one
     	 String name = "";
     	 String width, depth, height = "";
     	 Appliance tempAppliance;
@@ -33,21 +34,19 @@ public class MyFile {
     		 currLine = curr.split(",");
     		 if(currLine.length > 0) {
 		    	 sku1 = currLine[0];
-		    	 sku2= currLine[1];
+		    	 bundleList= currLine[1];
 		    	 name = currLine[2];
 		    	 width = currLine[3];
 		    	 depth = currLine[4];
 		    	 height= currLine[5];
 		    	
 		    	 if(!sku1.isBlank()) {
-		    		 tempAppliance = new Appliance(sku1,name,width,depth,height);
+		    		 tempAppliance = new Appliance(sku1,bundleList, name,width,depth,height);
 		    		 hash.put(sku1+"", tempAppliance);
 		    	 }
-		    	 if(!sku2.isBlank()) {
-		    		 hash.put(sku2, new Appliance(sku2,name,width,depth,height));
-		    	 }
-	    	 }
+    	 }
     	 }
     	 openFile.close();
+    
      }
 }
