@@ -16,6 +16,14 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 
+
+
+/**
+ * found the error with the bundles. i am checking for row size = 10 but when its bundled the row size is more than 10. need to look into how
+ * to separate those cases
+ * 
+ * 
+ * */
 public class HtmlParser {
 
 	private File dimensionsFile;
@@ -69,7 +77,9 @@ public class HtmlParser {
 		for(Element row: rows) {
 			
 			Elements columns = row.select("td");
-			
+			if(columns.size() > 2 ) {
+				System.out.println("column " + columns.get(1).text() + " size " + columns.size());
+			}
 			if(columns.size() == 10) {
 				
 				
@@ -170,6 +180,7 @@ public class HtmlParser {
 				htmlContents.append("<td>" + app.getWidth() + "</td>").append(systemSeparator);
 				htmlContents.append("<td>" + app.getDepth() + "</td>").append(systemSeparator);
 				htmlContents.append("<td>" + app.getLength() + "</td>").append(systemSeparator);
+				htmlContents.append("<td class='notes-red'>" + app.getNotes() + "</td>").append(systemSeparator);
 				htmlContents.append("<td> <img src=" + imageFolder + imageName + ".png alt= \"no\" ></td>" );
 				htmlContents.append("<td> <input type = \"checkBox\" > </td>").append(systemSeparator);
 				htmlContents.append("</tr>").append(systemSeparator);

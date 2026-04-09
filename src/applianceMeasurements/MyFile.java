@@ -24,6 +24,7 @@ public class MyFile {
     	 String bundleList = ""; //this stores the item that is bundled with this one
     	 String name = "";
     	 String width, depth, height = "";
+    	 String notes = "";
     	 Appliance tempAppliance;
     	 String curr;
     	 String[] currLine;
@@ -31,7 +32,7 @@ public class MyFile {
     	 
     	 while(openFile.hasNextLine()) {
     		 curr = openFile.nextLine();
-    		 currLine = curr.split(",");
+    		 currLine = curr.split(",",-1);
     		 if(currLine.length > 0) {
 		    	 sku1 = currLine[0];
 		    	 bundleList= currLine[1];
@@ -39,9 +40,10 @@ public class MyFile {
 		    	 width = currLine[3];
 		    	 depth = currLine[4];
 		    	 height= currLine[5];
+		    	 notes = currLine[6];
 		    	
 		    	 if(!sku1.isBlank()) {
-		    		 tempAppliance = new Appliance(sku1,bundleList, name,width,depth,height);
+		    		 tempAppliance = new Appliance(sku1,bundleList, name,width,depth,height, notes);
 		    		 hash.put(sku1+"", tempAppliance);
 		    	 }
     	 }
